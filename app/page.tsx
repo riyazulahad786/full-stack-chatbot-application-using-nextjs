@@ -74,9 +74,16 @@ export default function Home() {
           ))}
         </div>
       ) : (
-        <div className="w-full flex justify-center pt-32">
-          <h1 className="font-bold text-3xl sm:text-xl">Please use the input field below</h1>
+        <>
+        <div className="w-full flex  justify-center pt-32">
+<div>                    <h1 className="font-bold lg:text-3xl text-xl">Want to Know more ? use our chatbot</h1>
+</div>
         </div>
+        <div className="w-full flex  justify-center">
+       
+                  <h1 className="font-bold lg:text-3xl text-xl">Please use the input field below</h1>
+                </div>
+                </>
       )}
       <form onSubmit={handleSubmit} className="p-5 fixed bottom-0 left-0 w-[75%] bg-neutral-800 mx-auto right-0">
         <div className="relative flex items-center">
@@ -87,7 +94,7 @@ export default function Home() {
             value={input}
             onChange={handleInputChange}
             autoFocus
-            placeholder="Ask me anything ...."
+            placeholder="Ask me anything"
             spellCheck={false}
             className="w-full focus:outline-none shadow-teal-800 shadow-xl placeholder:text-gray-300 text-sm text-white bg-neutral-600 p-5 pr-15 rounded-xl"
           />
