@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import TextArea from 'react-textarea-autosize';
 
 type Message = {
@@ -8,9 +8,10 @@ type Message = {
   content: string;
 };
 
-export default function page() {
+export default function Page() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Load chat history from sessionStorage on component mount
@@ -19,6 +20,11 @@ export default function page() {
       setMessages(JSON.parse(savedMessages));
     }
   }, []);
+
+  useEffect(() => {
+    // Scroll to the bottom when messages change
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
@@ -72,18 +78,17 @@ export default function page() {
               )}
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
       ) : (
         <>
-        <div className="w-full flex  justify-center pt-32">
-<div>                    <h1 className="font-bold lg:text-3xl text-xl">Want to Know more ? use our chatbot</h1>
-</div>
-        </div>
-        <div className="w-full flex  justify-center">
-       
-                  <h1 className="font-bold lg:text-3xl text-xl">Please use the input field below</h1>
-                </div>
-                </>
+          <div className="w-full flex justify-center pt-32">
+            <h1 className="font-bold lg:text-3xl text-xl">Want to Know more? Use our chatbot</h1>
+          </div>
+          <div className="w-full flex justify-center">
+            <h1 className="font-bold lg:text-3xl text-xl">Please use the input field below</h1>
+          </div>
+        </>
       )}
       <form onSubmit={handleSubmit} className="p-5 fixed bottom-0 left-0 w-[75%] bg-neutral-800 mx-auto right-0">
         <div className="relative flex items-center">

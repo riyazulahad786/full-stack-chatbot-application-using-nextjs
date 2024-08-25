@@ -1,10 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// In-memory store for recent queries
+const recentQueries: { [key: string]: string } = {};
+
 const predefinedResponses: { [key: string]: string } = {
   "hello": "Hi there! How can I help you today?",
   "hi": "Hello! What services do you offer?",
   "who are you": "I'm your friendly chatbot here to help you with your queries.",
   "hey": "Hi! How can I contact support?",
+  "no":"all right good",
+  "i need help":"how can i support you",
+  "good morning":"good morning",
+  "morning":"morning",
+  "good afternoon":"good afternoon",
+  "good evening":"good evening",
+  "afternoon":"afternoon",
+  "evening":"evening",
   "how are you": "I'm just a bunch of code, so I don't have feelings, but thanks for asking!",
   "what is your name": "I'm your friendly chatbot!",
   "where are you from": "I'm everywhere around the world, just a click away!",
@@ -34,7 +45,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ reply: "Please provide a message." }, { status: 400 });
   }
 
-  const response = predefinedResponses[message.toLowerCase()] || "I'm sorry, I don't understand that.";
+  const query = message.toLowerCase();
+  let response;
+
+  if (recentQueries[query]) {
+    // If the query was answered before, return the previous rsponse...
+    response = recentQueries[query];
+  } else {
+    // Check predefined responses
+    response = predefinedResponses[query] || "I'm sorry, I don't understand that.";
+    // Store the response for future reference
+    recentQueries[query] = response;
+  }
 
   return NextResponse.json({ reply: response });
 }
